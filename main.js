@@ -1,19 +1,35 @@
-const posts = []
-let postID = 0
+let posts = []
+let autoPostID = 0
 
-$('.add-post').click(function() {
+$('.add-post').on ('click', function () {
     let postText = $('#post-name').val()
-    let newPost = {text: postText, id: postID}
+    let newPost = {text: postText, id: autoPostID}
     posts.push(newPost)
+    renderPosts()
     $('#post-name').val("")
-    postID++
+    autoPostID++
+})
+
+$('.posts').on('click', '.remove', function () {
+    let postId = $(this).closest('p').data('id')
+    for (let i in posts) {
+        if (posts[i].id == postId) {
+            posts.splice(i, 1)
+            break;
+        }
+    }
     renderPosts()
 })
 
 const renderPosts = function () {
     $('.posts').empty()
-    for (let post of posts) {
-        let postToPrint = $('<p class="post" data-id="' + post.id + '">' + post.text + '</p>')
+    for (let i=0; i<posts.length; i++) {
+        let postToPrint = createPostElement(posts[i])
+        addRemoveButton(postToPrint, i)
         $('.posts').append(postToPrint)
     }
 }
+
+const createPostElement = function (post) { return $('<p class="post" data-id="' + post.id + '">' + post.text + '</p>') }
+
+const addRemoveButton = function (post, index) { post.append($('<button type="button" class="remove">REMOVE</button>')) }
