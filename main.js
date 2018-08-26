@@ -4,7 +4,7 @@ let autoPostID = 0
 $('.add-post').on ('click', function () {
     let postText = $('#post-name').val()
     if(postText){
-        let newPost = {text: postText, id: autoPostID, comments: []}
+        let newPost = {text: postText, id: autoPostID, comments: [], commentsCount: 0}
         posts.push(newPost)
         renderPosts()
         autoPostID++
@@ -28,10 +28,28 @@ $('.posts').on('click', '.comment-btn', function () {
     let username = $(this).closest('form').find('.username').val()
     for (let post of posts) {
         if (post.id == id) {
-            post.comments.push({username: username, comment: comment})
+            post.comments.push({username: username, comment: comment, commentId: post.commentsCount})
+            post.commentsCount++
             break;
         }
     }
+    renderPosts()
+})
+
+$('.posts').on('click', '.remove-comment', function () {
+    let postId = $(this).closest('form').closest('p').data('id')
+    let commentId = $(this).closest('li').data('id')
+    for (let post of posts) {
+        if (post.id == postId) {
+            for (let i in post.comments) {
+                if (post.comments[i].commentId == commentId) {
+                    post.comments.splice(i, 1)
+                    break;
+                }
+            }
+            break;
+        }
+    }    
     renderPosts()
 })
 
@@ -71,6 +89,6 @@ const addPostComments = function (post) {
     let commentsDiv = post.find('.post-comments')
     commentsDiv.empty()
     for (let comment of comments) {
-        commentsDiv.append('<li>' + comment.username + ' says: "' + comment.comment + '"</li>')
+        commentsDiv.append('<li data-id="' + comment.commentId + '">' + comment.username + ' says: "' + comment.comment + '"<button type="button" class="remove-comment">Remove</button></li>')
     }
 }
