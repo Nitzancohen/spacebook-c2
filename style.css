@@ -1,0 +1,17 @@
+.remove {
+    margin: 0 10px 10px 0; 
+}
+
+.comment-form {
+    padding: 10px;
+    border: 1px solid black;
+}
+.username {
+    width: 150px;
+    margin-right: 10px;
+}
+
+.comment {
+    width: 220px;
+    margin-right: 10px;
+}
