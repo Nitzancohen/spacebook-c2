@@ -18,5 +18,10 @@
 
 .remove-comment {
     margin-left: 10px;
+    margin-top: 10px;
     font-size: 10px;
+}
+
+.post {
+    background-color: beige;
 }

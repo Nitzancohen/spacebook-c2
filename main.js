@@ -53,11 +53,18 @@ $('.posts').on('click', '.remove-comment', function () {
     renderPosts()
 })
 
+$('.posts').on('click', '.post-text', function () {
+    let id = $(this).closest('p').data('id')
+    let post = $('#'+id)
+    let myWindow = window.open("", "_newtab");
+    myWindow.document.write(post.html());
+})
+
 const renderPosts = function () {
     $('#post-name').val("")
     $('.posts').empty()
-    for (let i=0; i<posts.length; i++) {
-        let postToPrint = createPostElement(posts[i])
+    for (let post of posts) {
+        let postToPrint = createPostElement(post)
         addRemoveButton(postToPrint)
         addCommentsForm(postToPrint)
         addPostComments(postToPrint)
@@ -65,15 +72,15 @@ const renderPosts = function () {
     }
 }
 
-const createPostElement = function (post) { return $('<p class="post" data-id="' + post.id + '">' + post.text + '</p>') }
+const createPostElement = function (post) { return $('<p class="post" data-id="' + post.id + '" id="' + post.id + '"><span class="post-text">' + post.text + '</span></p>') }
 
-const addRemoveButton = function (post) { post.prepend($('<button type="button" class="remove">REMOVE</button>')) }
+const addRemoveButton = function (post) { post.prepend($('<button type="button" class="btn btn-danger remove">REMOVE</button>')) }
 
 const addCommentsForm = function (post) {
     let form = $('<form class="comment-form">' +
     '<input type="text" class="username" placeholder="Username">' +
     '<input type="text" class="comment" placeholder="Write a comment...">' +
-    '<button type="button" class="comment-btn">Comment</button><div class="post-comments"></div></form>')
+    '<button type="button" class="btn comment-btn">Comment</button><div class="post-comments"></div></form>')
     post.append(form)
 }
 
@@ -89,6 +96,6 @@ const addPostComments = function (post) {
     let commentsDiv = post.find('.post-comments')
     commentsDiv.empty()
     for (let comment of comments) {
-        commentsDiv.append('<li data-id="' + comment.commentId + '">' + comment.username + ' says: "' + comment.comment + '"<button type="button" class="remove-comment">Remove</button></li>')
+        commentsDiv.append('<li data-id="' + comment.commentId + '">' + comment.username + ' says: "' + comment.comment + '"<button type="button" class="btn btn-danger remove-comment">Remove</button></li>')
     }
 }
