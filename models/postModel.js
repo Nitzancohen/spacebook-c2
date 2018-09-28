@@ -5,14 +5,17 @@ var mongoose = require('mongoose');
 
 
 let commentSchema = new mongoose.Schema({
-
+    text: String,
+    user: String
 });
 
+let Comment = mongoose.model('comment', commentSchema)
 
 let postSchema = new mongoose.Schema({
-
+    text: String,
+    comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'comment'}]
 });
 
 let Post = mongoose.model('post', postSchema)
 
-module.exports = Post
+module.exports = {Post, Comment};

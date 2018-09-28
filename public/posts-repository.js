@@ -6,12 +6,27 @@ class PostsRepository {
         this.posts = [];
     }
 
+    getPosts(){
+        return $.get('posts').then((data)=>{
+            this.posts=data;
+        })
+    }
+
     addPost(postText) {
-        this.posts.push({ text: postText, comments: [] });
+        return $.post('/addPost', { text: postText, comments: [] }).then((data)=>{
+            this.posts.push(data);
+        }).fail((err)=>{
+            console.log(err);
+        });
     }
 
     removePost(index) {
-        this.posts.splice(index, 1);
+        // let post = this.posts(index);
+        return $.post('/removePost', this.posts[index]).then((data)=>{
+            this.posts.splice(index, 1);
+        }).fail((err)=>{
+            console.log(err);
+        });
     }
     
     addComment(newComment, postIndex) {
