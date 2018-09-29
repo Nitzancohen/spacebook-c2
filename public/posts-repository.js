@@ -21,8 +21,8 @@ class PostsRepository {
     }
 
     removePost(index) {
-        // let post = this.posts(index);
-        return $.post('/removePost', this.posts[index]).then((data)=>{
+        let postId = this.posts[index]._id
+        return $.post('/removePost/'+postId).then((data)=>{
             this.posts.splice(index, 1);
         }).fail((err)=>{
             console.log(err);
@@ -30,11 +30,22 @@ class PostsRepository {
     }
     
     addComment(newComment, postIndex) {
-        this.posts[postIndex].comments.push(newComment);
+        let postId = this.posts[postIndex]._id
+        return $.post('/addComment/'+postId, newComment).then((data)=>{
+            this.posts[postIndex].comments.push(data);
+        }).fail((err)=>{
+            console.log(err);
+        })
     };
 
     deleteComment(postIndex, commentIndex) {
-        this.posts[postIndex].comments.splice(commentIndex, 1);
+        let postId = this.posts[postIndex]._id
+        let commentId = this.posts[postIndex].comments[commentIndex]._id
+        return $.post ('/removeComment/'+postId+'/'+commentId).then((data)=> {
+            this.posts[postIndex].comments.splice(commentIndex, 1);
+        }).fail((err)=> {
+            console.log(err);
+        })
       };
 }
 

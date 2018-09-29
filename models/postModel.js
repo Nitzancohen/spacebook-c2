@@ -9,13 +9,13 @@ let commentSchema = new mongoose.Schema({
     user: String
 });
 
-let Comment = mongoose.model('comment', commentSchema)
+// let Comment = mongoose.model('comment', commentSchema)
 
 let postSchema = new mongoose.Schema({
     text: String,
-    comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'comment'}]
+    comments: [commentSchema]
 });
 
 let Post = mongoose.model('post', postSchema)
 
-module.exports = {Post, Comment};
+module.exports = Post;
