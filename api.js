@@ -23,7 +23,7 @@ router.post('/addPost', function(req, res) {
     res.send(newPost);
 });
 
-router.post('/removePost/:id', function(req, res) {
+router.delete('/removePost/:id', function(req, res) {
     Post.findByIdAndRemove(req.params.id).exec(function (err, post) {
         if (err) { res.status(500).send(err); }
         res.send(post);
@@ -39,7 +39,7 @@ router.post('/addComment/:postId', function(req, res) {
     })
 });
 
-router.post('/removeComment/:postId/:commentId', function(req, res) {
+router.delete('/removeComment/:postId/:commentId', function(req, res) {
     Post.findById(req.params.postId, function(err, post) {
         if (err) { res.status(500).send(err); }
         post.comments.id(req.params.commentId).remove();

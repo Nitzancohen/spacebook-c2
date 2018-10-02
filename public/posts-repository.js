@@ -22,10 +22,16 @@ class PostsRepository {
 
     removePost(index) {
         let postId = this.posts[index]._id
-        return $.post('/removePost/'+postId).then((data)=>{
-            this.posts.splice(index, 1);
-        }).fail((err)=>{
-            console.log(err);
+
+        return $.ajax({
+            url: '/removePost/'+postId,
+            type: 'DELETE',
+            success: (data)=>{
+                this.posts.splice(index, 1);
+            },
+            fail: (err)=>{
+                console.log(err);
+            }
         });
     }
     
@@ -41,11 +47,17 @@ class PostsRepository {
     deleteComment(postIndex, commentIndex) {
         let postId = this.posts[postIndex]._id
         let commentId = this.posts[postIndex].comments[commentIndex]._id
-        return $.post ('/removeComment/'+postId+'/'+commentId).then((data)=> {
-            this.posts[postIndex].comments.splice(commentIndex, 1);
-        }).fail((err)=> {
-            console.log(err);
-        })
+
+        return $.ajax({
+            url: '/removeComment/'+postId+'/'+commentId,
+            method: 'DELETE',
+            success: (data)=>{
+                this.posts[postIndex].comments.splice(commentIndex, 1);
+            },
+            fail: (err)=>{
+                console.log(err);
+            }
+        });
       };
 }
 
